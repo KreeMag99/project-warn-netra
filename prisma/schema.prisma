@@ -13,10 +13,25 @@ model Notice {
   date        DateTime
   affected    Int
   location    String
+  sector      String?
+  reason      String?
   source      String
   status      String   @default("completed")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+
   @@map("notices")
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  email             String   @db.VarChar(255)
+  alertType         String   // "company" or "all"
+  alertValue        String   // company name or "all"
+  verified          Boolean  @default(false)
+  verificationToken String   @default(uuid())
+  createdAt         DateTime @default(now())
+
+  @@unique([email, alertType, alertValue])
 }
