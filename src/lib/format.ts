@@ -12,3 +12,12 @@ export function daysUntil(date: Date | string): number {
   const diffTime = target - now;
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}

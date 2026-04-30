@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { searchNotices } from '@/lib/notices';
-import { formatDate } from '@/lib/format';
+import { prisma } from '@/lib/prisma';
+import { formatDate, slugify } from '@/lib/format';
 import StatusBadge from '@/components/status-badge';
 
 export default async function NoticesPage({ 
@@ -11,8 +12,18 @@ export default async function NoticesPage({
   const resolvedParams = await searchParams;
   const q = typeof resolvedParams.q === 'string' ? resolvedParams.q : '';
   const status = typeof resolvedParams.status === 'string' ? resolvedParams.status : 'all';
+  const sector = typeof resolvedParams.sector === 'string' ? resolvedParams.sector : 'all';
 
-  const notices = await searchNotices(q, status);
+  const notices = await searchNotices(q, status, sector);
+
+  const rawSectors = await prisma.notice.findMany({
+    select: { sector: true },
+    distinct: ['sector']
+  });
+  const sectors = rawSectors
+    .map(s => s.sector)
+    .filter((s): s is string => s !== null && s !== '')
+    .sort();
 
   const statuses = [
     { label: 'All', value: 'all' },
@@ -59,6 +70,7 @@ export default async function NoticesPage({
                 const params = new URLSearchParams();
                 if (q) params.set('q', q);
                 if (s.value !== 'all') params.set('status', s.value);
+                if (sector !== 'all') params.set('sector', sector);
                 
                 const linkHref = params.toString() ? `?${params.toString()}` : '?';
 
@@ -77,6 +89,36 @@ export default async function NoticesPage({
                 );
               })}
             </div>
+
+            <div className="flex flex-col pt-3 border-t border-zinc-200/60 dark:border-zinc-800/60">
+              <span className="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mb-3">Filter By Sector</span>
+              <div className="flex flex-wrap items-center gap-2">
+                {[{label: 'All Sectors', value: 'all'}, ...sectors.map(s => ({label: s, value: s}))].map(s => {
+                  const isActive = s.value === sector;
+                  
+                  const params = new URLSearchParams();
+                  if (q) params.set('q', q);
+                  if (status !== 'all') params.set('status', status);
+                  if (s.value !== 'all') params.set('sector', s.value);
+                  
+                  const linkHref = params.toString() ? `?${params.toString()}` : '?';
+
+                  return (
+                    <Link 
+                      key={s.value} 
+                      href={linkHref}
+                      className={`px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all ${
+                        isActive 
+                          ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-md shadow-zinc-900/20' 
+                          : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700/50 hover:shadow-sm'
+                      }`}
+                    >
+                      {s.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </header>
 
@@ -90,7 +132,7 @@ export default async function NoticesPage({
                   <div className="flex justify-between items-start gap-4">
                     <div>
                       <Link 
-                        href={`/notices/${notice.id}`}
+                        href={`/companies/${notice.companySlug || slugify(notice.company)}`}
                         className="font-black text-2xl text-zinc-900 dark:text-white hover:text-blue-600 transition-colors"
                       >
                         {notice.company}
@@ -157,12 +199,11 @@ export default async function NoticesPage({
                   notices.map((notice) => (
                     <tr key={notice.id} className="transition-all hover:bg-white dark:hover:bg-zinc-800/40 group relative">
                       <td className="px-8 py-6 whitespace-nowrap">
-                        <div className="flex flex-col items-start gap-1.5">
+                        <div className="flex flex-col items-start gap-1.5 relative z-20">
                           <Link 
-                            href={`/notices/${notice.id}`}
-                            className="font-extrabold text-xl text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors focus:outline-none"
+                            href={`/companies/${notice.companySlug || slugify(notice.company)}`}
+                            className="font-extrabold text-xl text-zinc-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:outline-none"
                           >
-                            <span className="absolute inset-0 z-10" aria-hidden="true"></span>
                             {notice.company}
                           </Link>
                           {notice.sector && (
@@ -172,7 +213,7 @@ export default async function NoticesPage({
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-6 whitespace-nowrap text-right">
+                      <td className="px-6 py-6 whitespace-nowrap text-right relative z-20">
                         <span className="font-bold text-[17px] text-zinc-800 dark:text-zinc-200">
                           {notice.affected.toLocaleString('en-IN')}
                         </span>
@@ -190,6 +231,9 @@ export default async function NoticesPage({
                       </td>
                       <td className="px-8 py-6 whitespace-nowrap flex justify-center relative z-20">
                         <StatusBadge status={notice.status} />
+                      </td>
+                      <td className="absolute inset-0 z-10">
+                        <Link href={`/notices/${notice.id}`} aria-hidden="true" className="w-full h-full block focus:outline-none" tabIndex={-1}></Link>
                       </td>
                     </tr>
                   ))

@@ -1,4 +1,5 @@
 import { getStats, getAllNotices } from '@/lib/notices'
+import { prisma } from '@/lib/prisma'
 import StatusBadge from '@/components/status-badge'
 import Link from 'next/link'
 
@@ -8,6 +9,21 @@ export default async function Home() {
   
   // Get first 5 notices
   const recentNotices = notices.slice(0, 5)
+
+  const sectorBreakdown = await prisma.notice.groupBy({
+    by: ['sector'],
+    _sum: { affected: true },
+    where: { sector: { not: null } }
+  });
+  
+  const validSectors = sectorBreakdown
+    .filter(s => s._sum.affected && s._sum.affected > 0)
+    .sort((a, b) => (b._sum.affected || 0) - (a._sum.affected || 0))
+    .slice(0, 10);
+
+  const maxSectorAffected = validSectors.length > 0 
+    ? Math.max(...validSectors.map(s => s._sum.affected || 0)) 
+    : 1;
 
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-black p-6 sm:p-12 font-sans text-zinc-900 dark:text-zinc-100 overflow-hidden relative">
@@ -66,6 +82,45 @@ export default async function Home() {
             <div className="w-full">
               <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1.5">Upcoming Layoffs</h3>
               <p className="text-4xl lg:text-5xl font-extrabold text-amber-600 dark:text-amber-500 tracking-tighter">{stats.upcomingNotices}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Sector Breakdown Chart */}
+        <section className="space-y-8 pt-6">
+          <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-5">
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              Layoffs by Sector
+            </h2>
+          </div>
+          
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 md:p-8 shadow-sm border border-zinc-200 dark:border-zinc-800 relative z-20">
+            <div className="space-y-6">
+              {validSectors.length > 0 ? (
+                validSectors.map((sectorData) => {
+                  const affected = sectorData._sum.affected || 0;
+                  const percentage = Math.max(1, (affected / maxSectorAffected) * 100);
+                  
+                  return (
+                    <div key={sectorData.sector} className="space-y-2 group">
+                      <div className="flex justify-between items-center text-sm font-bold">
+                        <span className="text-zinc-700 dark:text-zinc-300 uppercase tracking-widest text-[11px] sm:text-xs">{sectorData.sector}</span>
+                        <span className="text-zinc-900 dark:text-white font-extrabold">{affected.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden flex shadow-inner">
+                        <div 
+                          className="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-full transition-all duration-1000 ease-out group-hover:from-blue-500 group-hover:to-blue-400"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="p-8 text-center bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+                  <p className="text-zinc-500 dark:text-zinc-400 font-medium">No sector data available yet.</p>
+                </div>
+              )}
             </div>
           </div>
         </section>

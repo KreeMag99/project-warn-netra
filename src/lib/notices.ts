@@ -13,7 +13,7 @@ export async function getNoticeById(id: number) {
   })
 }
 
-export async function searchNotices(query?: string, statusFilter?: string) {
+export async function searchNotices(query?: string, statusFilter?: string, sectorFilter?: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {}
 
@@ -26,6 +26,10 @@ export async function searchNotices(query?: string, statusFilter?: string) {
 
   if (statusFilter && statusFilter.toLowerCase() !== 'all') {
     where.status = { equals: statusFilter, mode: 'insensitive' }
+  }
+
+  if (sectorFilter && sectorFilter.toLowerCase() !== 'all') {
+    where.sector = { equals: sectorFilter, mode: 'insensitive' }
   }
 
   return prisma.notice.findMany({

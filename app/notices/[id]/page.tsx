@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getNoticeById } from '@/lib/notices';
-import { formatDate, daysUntil } from '@/lib/format';
+import { formatDate, daysUntil, slugify } from '@/lib/format';
 import StatusBadge from '@/components/status-badge';
 import { SubscribeForm } from '@/components/subscribe-form';
 
@@ -51,14 +51,21 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
         <header className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 pb-6 border-b border-zinc-200 dark:border-zinc-800">
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white">
-                {notice.company}
-              </h1>
-              {notice.sector && (
-                <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
-                  {notice.sector}
-                </span>
-              )}
+              <Link 
+                href={`/companies/${notice.companySlug || slugify(notice.company)}`} 
+                className="inline-block hover:opacity-80 transition-opacity"
+              >
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  {notice.company}
+                </h1>
+              </Link>
+              <div>
+                {notice.sector && (
+                  <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                    {notice.sector}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex-shrink-0 pt-2">
               <StatusBadge status={notice.status} />

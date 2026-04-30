@@ -19,9 +19,27 @@ model Notice {
   status      String   @default("completed")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
+  
+  companySlug String?
+  Company     Company? @relation(fields: [companySlug], references: [slug])
 
   @@map("notices")
+}
+
+model Company {
+  slug          String   @id
+  name          String
+  fullName      String?
+  sector        String?
+  hqCity        String?
+  hqState       String?
+  employeeCount Int?
+  description   String?
+  careersUrl    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  notices       Notice[]
 }
 
 model Subscription {
