@@ -32,12 +32,16 @@ export async function sendVerificationEmail(email: string, token: string) {
 
     if (error) {
       console.error('Failed to send verification email (Resend API Error):', error);
+      console.error('=== RESEND ERROR ===');
+      console.error(JSON.stringify(error, null, 2));
       return { success: false, error };
     }
 
     return { success: true, data };
   } catch (err) {
     console.error('Failed to send verification email (Caught Error):', err);
+    console.error('=== RESEND ERROR ===');
+    console.error(JSON.stringify(err, null, 2));
     return { success: false, error: err };
   }
 }
