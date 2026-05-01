@@ -8,7 +8,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Project WARN <mmkeerthan60@gmail.com>',
+      from: 'Project WARN <onboarding@resend.dev>',
       to: email,
       subject: 'Verify your Project WARN alert subscription',
       html: `
