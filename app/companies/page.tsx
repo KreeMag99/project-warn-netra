@@ -8,6 +8,9 @@ export const metadata = {
 
 export default async function CompaniesPage() {
   const companies = await prisma.company.findMany({
+    where: {
+      notices: { some: {} }
+    },
     include: {
       _count: {
         select: { notices: true }
@@ -56,12 +59,12 @@ export default async function CompaniesPage() {
                       {company.hqCity}{company.hqCity && company.hqState ? ', ' : ''}{company.hqState}
                     </div>
                   )}
-                  {company.employeeCount !== null && (
+                  {company.employeeCount && company.employeeCount > 0 ? (
                     <div className="flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400 gap-2">
                       <span className="text-base grayscale opacity-60 group-hover:opacity-100 transition-opacity">👥</span>
-                      {company.employeeCount.toLocaleString('en-IN')} Employees
+                      ≈ {company.employeeCount.toLocaleString('en-IN')} Employees
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
 

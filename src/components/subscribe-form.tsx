@@ -5,9 +5,10 @@ import { useState } from "react";
 interface SubscribeFormProps {
   alertType: string;
   alertValue: string;
+  compact?: boolean;
 }
 
-export function SubscribeForm({ alertType, alertValue }: SubscribeFormProps) {
+export function SubscribeForm({ alertType, alertValue, compact = false }: SubscribeFormProps) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -59,13 +60,13 @@ export function SubscribeForm({ alertType, alertValue }: SubscribeFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address..."
               required
-              className="flex-1 px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:outline-none focus:ring-2 focus:ring-blue-500/40 outline-none transition-shadow text-sm disabled:opacity-50"
+              className={`flex-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:outline-none focus:ring-2 focus:ring-blue-500/40 outline-none transition-shadow disabled:opacity-50 ${compact ? 'px-3 py-2.5 text-xs' : 'px-4 py-3 text-sm'}`}
               disabled={status === "loading"}
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors disabled:opacity-50 text-sm flex items-center justify-center min-w-[120px] shadow-sm"
+              className={`bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px] shadow-sm ${compact ? 'px-4 py-2.5 text-xs' : 'px-6 py-3 text-sm'}`}
             >
               {status === "loading" ? (
                 <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -74,9 +75,11 @@ export function SubscribeForm({ alertType, alertValue }: SubscribeFormProps) {
               )}
             </button>
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium pl-1">
-            We&apos;ll send you alerts when new notices match your subscription.
-          </p>
+          {!compact && (
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium pl-1">
+              Be notified when new notices match your subscription. Free. Unsubscribe anytime.
+            </p>
+          )}
         </form>
       )}
 

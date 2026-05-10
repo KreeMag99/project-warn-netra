@@ -53,3 +53,18 @@ model Subscription {
 
   @@unique([email, alertType, alertValue])
 }
+
+model Report {
+  id              String   @id @default(cuid())
+  companyName     String
+  affected        Int?
+  location        String?
+  reason          String?
+  sourceUrl       String?
+  reporterRole    String?  // employee, journalist, other
+  details         String?
+  status          String   @default("pending")  // pending, approved, rejected
+  createdAt       DateTime @default(now())
+
+  @@map("reports")
+}

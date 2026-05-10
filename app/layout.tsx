@@ -62,6 +62,9 @@ export default function RootLayout({
               <Link href="/about" className="text-sm font-semibold text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white transition-colors">
                 About
               </Link>
+              <Link href="/report" className="text-sm font-bold text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors ml-2">
+                Report a Layoff
+              </Link>
               <div className="pl-2 border-l border-zinc-200 dark:border-zinc-800">
                 <ThemeToggle />
               </div>
@@ -81,8 +84,8 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-6 sm:px-12 flex flex-col items-center justify-center space-y-10">
             <div className="text-center space-y-3 w-full max-w-lg flex flex-col items-center">
               <h3 className="font-bold text-lg text-black dark:text-white">Subscribe to the Weekly Digest</h3>
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 pb-2">Join thousands of Indian workers obtaining immediate email notifications summarizing structural layoffs occurring nationally.</p>
-              <SubscribeForm alertType="all" alertValue="all" />
+              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 pb-2">Receive a weekly summary of all new layoff notices in India. Free. Unsubscribe anytime.</p>
+              <SubscribeForm alertType="all" alertValue="all" compact={true} />
             </div>
 
             <div className="w-full max-w-sm h-px bg-zinc-200 dark:bg-zinc-800"></div>
@@ -91,11 +94,15 @@ export default function RootLayout({
               <p className="font-semibold text-zinc-600 dark:text-zinc-400 text-center tracking-wide text-sm">
                 Built because Indian workers deserve advance notice.
               </p>
-              <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider flex-wrap justify-center">
                 <Link href="/about" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline underline-offset-4 transition-colors">
                   About Project WARN
                 </Link>
-                <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">|</span>
+                <Link href="/privacy" className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  Privacy Policy
+                </Link>
+                <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">|</span>
                 <Link href="/" className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
                   Home
                 </Link>

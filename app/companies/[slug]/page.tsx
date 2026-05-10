@@ -76,9 +76,13 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                     📍 {company.hqCity}{company.hqCity && company.hqState ? ', ' : ''}{company.hqState}
                   </span>
                 )}
-                {company.employeeCount !== null && (
+                {company.employeeCount && company.employeeCount > 0 ? (
                   <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 shadow-sm border border-zinc-200/50 dark:border-zinc-700/50">
-                    👥 {company.employeeCount.toLocaleString('en-IN')} Staff
+                    👥 ≈ {company.employeeCount.toLocaleString('en-IN')} Staff
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 shadow-sm border border-zinc-200/50 dark:border-zinc-700/50">
+                    👥 Actively monitoring
                   </span>
                 )}
               </div>
@@ -137,7 +141,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
               <span className="text-2xl drop-shadow-md">🔔</span> Get alerts for {company.name}
             </h2>
             <p className="text-zinc-400 font-medium text-sm mt-2 leading-relaxed max-w-2xl">
-              Get an instant email alert if {company.name} formally announces any further large-scale layoffs or retrenchments.
+              Get email alerts when new layoff notices are published for this company.
             </p>
           </div>
           <div className="pt-2">
