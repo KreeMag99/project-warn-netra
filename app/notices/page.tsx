@@ -96,8 +96,8 @@ export default async function NoticesPage({
               </button>
             </form>
 
-            <div className="flex flex-wrap items-center gap-2 pt-2">
-              <span className="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mr-2 w-full sm:w-auto mb-2 sm:mb-0">Filter By Status</span>
+            <div className="flex gap-2 overflow-x-auto pb-3 snap-x pt-2 -mx-2 px-2 scrollbar-hide">
+              <span className="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mr-2 flex-shrink-0 self-center">Status</span>
               {statuses.map(s => {
                 const isActive = s.value === status;
                 
@@ -114,7 +114,7 @@ export default async function NoticesPage({
                   <Link 
                     key={s.value} 
                     href={linkHref}
-                    className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                    className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all flex-shrink-0 snap-start whitespace-nowrap ${
                       isActive 
                         ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' 
                         : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700/50 hover:shadow-sm'
@@ -128,7 +128,7 @@ export default async function NoticesPage({
 
             <div className="flex flex-col pt-3 border-t border-zinc-200/60 dark:border-zinc-800/60">
               <span className="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mb-3">Filter By Sector</span>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex gap-2 overflow-x-auto pb-3 snap-x -mx-2 px-2 scrollbar-hide">
                 {[{label: `All Sectors (${counts.total})`, value: 'all'}, ...sectors.map(s => ({label: `${s} (${counts.sectorCounts[s] || 0})`, value: s}))].map(s => {
                   const isActive = s.value === sector;
                   
@@ -145,7 +145,7 @@ export default async function NoticesPage({
                     <Link 
                       key={s.value} 
                       href={linkHref}
-                      className={`px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all ${
+                      className={`px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all flex-shrink-0 snap-start whitespace-nowrap ${
                         isActive 
                           ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-md shadow-zinc-900/20' 
                           : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700/50 hover:shadow-sm'
@@ -160,8 +160,8 @@ export default async function NoticesPage({
           </div>
         </header>
 
-        <section className="bg-white dark:bg-zinc-900/80 rounded-3xl shadow-lg shadow-zinc-200/50 dark:shadow-none border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-          <div className="overflow-x-auto">
+        <section className="bg-white dark:bg-zinc-900/80 rounded-3xl shadow-lg shadow-zinc-200/50 dark:shadow-none border border-zinc-200 dark:border-zinc-800 overflow-hidden relative">
+          <div className="overflow-x-auto scrollbar-hide">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="bg-zinc-50/80 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 text-xs font-bold tracking-widest text-zinc-500 dark:text-zinc-400 uppercase">

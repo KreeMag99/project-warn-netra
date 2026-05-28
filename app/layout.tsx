@@ -4,6 +4,7 @@ import Link from 'next/link';
 import "./globals.css";
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { MobileNav } from '@/components/mobile-nav';
 import { SubscribeForm } from '@/components/subscribe-form';
 
 const geistSans = Geist({
@@ -52,7 +53,8 @@ export default function RootLayout({
               </span>
             </Link>
 
-            <nav className="flex items-center gap-6">
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-6">
               <Link href="/" className="text-sm font-semibold text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white transition-colors">
                 Home
               </Link>
@@ -69,6 +71,12 @@ export default function RootLayout({
                 <ThemeToggle />
               </div>
             </nav>
+
+            {/* Mobile Nav */}
+            <div className="flex items-center gap-2 md:hidden">
+              <ThemeToggle />
+              <MobileNav />
+            </div>
           </div>
         </header>
 

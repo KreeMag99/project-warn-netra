@@ -1,10 +1,33 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendVerificationEmail } from '@/lib/email';
+import { rateLimit, getClientIp, isBot } from '@/lib/rate-limit';
+
+const limiter = rateLimit({ name: 'subscribe', maxRequests: 3, windowSeconds: 60 });
 
 export async function POST(req: Request) {
   try {
+    // Rate limiting
+    const ip = getClientIp(req);
+    const { allowed, remaining } = limiter.check(ip);
+
+    if (!allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again in a minute.' },
+        {
+          status: 429,
+          headers: { 'Retry-After': '60', 'X-RateLimit-Remaining': '0' },
+        }
+      );
+    }
+
     const body = await req.json();
+
+    // Honeypot — silently accept but don't save
+    if (isBot(body)) {
+      return NextResponse.json({ success: true, message: 'Check your email to verify.' });
+    }
+
     const { email, alertType, alertValue } = body;
 
     if (!email || !alertType || !alertValue) {
@@ -47,7 +70,10 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, message: 'Check your email to verify sequence completed.' });
+    return NextResponse.json(
+      { success: true, message: 'Check your email to verify sequence completed.' },
+      { headers: { 'X-RateLimit-Remaining': remaining.toString() } }
+    );
   } catch (error) {
     console.error('Subscription API Error:', error);
     return NextResponse.json({ error: 'Internal server error occurred.' }, { status: 500 });

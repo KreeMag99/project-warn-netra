@@ -22,6 +22,7 @@ export default function ReportPage() {
       sourceUrl: formData.get('sourceUrl'),
       reporterRole: formData.get('reporterRole'),
       details: formData.get('details'),
+      website: formData.get('website'), // honeypot
     };
 
     try {
@@ -44,8 +45,8 @@ export default function ReportPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-black p-6 sm:p-12 font-sans text-zinc-900 dark:text-zinc-100 flex items-center justify-center">
-      <div className="max-w-xl w-full space-y-8 bg-white dark:bg-zinc-900/60 p-8 sm:p-12 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800">
+    <main className="min-h-screen bg-zinc-50 dark:bg-black p-4 sm:p-6 md:p-12 font-sans text-zinc-900 dark:text-zinc-100 flex items-start sm:items-center justify-center">
+      <div className="max-w-xl w-full space-y-8 bg-white dark:bg-zinc-900/60 p-5 sm:p-8 md:p-12 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
         
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-black tracking-tight text-black dark:text-white">
@@ -78,6 +79,12 @@ export default function ReportPage() {
                 {error}
               </div>
             )}
+
+            {/* Honeypot — hidden from real users, bots will fill it */}
+            <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10 overflow-hidden" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+            </div>
 
             <div className="space-y-1.5">
               <label htmlFor="companyName" className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
@@ -182,7 +189,7 @@ export default function ReportPage() {
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold text-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                className="w-full py-4 min-h-[48px] rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold text-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 active:scale-[0.98]"
               >
                 {isSubmitting ? (
                   <>
