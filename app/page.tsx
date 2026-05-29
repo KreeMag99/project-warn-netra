@@ -171,7 +171,7 @@ export default async function Home() {
                     </div>
                     
                     <div className="min-w-[110px] flex justify-end">
-                      <StatusBadge status={notice.status} />
+                      <StatusBadge status={notice.computedStatus} />
                     </div>
                   </div>
                 </div>

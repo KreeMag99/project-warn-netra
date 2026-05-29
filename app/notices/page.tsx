@@ -220,7 +220,7 @@ export default async function NoticesPage({
                         </span>
                       </td>
                       <td className="px-8 py-6 whitespace-nowrap flex justify-center relative z-20">
-                        <StatusBadge status={notice.status} />
+                        <StatusBadge status={notice.computedStatus} />
                       </td>
                       <td className="absolute inset-0 z-10">
                         <Link href={`/notices/${notice.id}`} aria-hidden="true" className="w-full h-full block focus:outline-none" tabIndex={-1}></Link>

@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { formatDate } from '@/lib/format';
+import { getComputedStatus } from '@/lib/notices';
 import StatusBadge from '@/components/status-badge';
 import { SubscribeForm } from '@/components/subscribe-form';
 
@@ -171,7 +172,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <p className="text-lg font-bold text-black dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{formatDate(notice.date)}</p>
-                          <StatusBadge status={notice.status} />
+                          <StatusBadge status={getComputedStatus(notice.date)} />
                         </div>
                         <p className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
                           {notice.affected.toLocaleString('en-IN')} workers impacted in {notice.location}

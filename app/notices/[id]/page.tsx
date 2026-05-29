@@ -35,7 +35,8 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
     notFound();
   }
 
-  const isUpcoming = notice.status.toLowerCase() === 'upcoming';
+  const computedStatus = notice.computedStatus;
+  const isUpcoming = computedStatus === 'upcoming' || computedStatus === 'in_progress';
   const remainingDays = daysUntil(notice.date);
 
   const shareUrl = encodeURIComponent(`https://projectwarn.org/notices/${notice.id}`);
@@ -71,7 +72,7 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
               </Link>
             </div>
             <div className="flex-shrink-0 pt-2 sm:pt-4">
-              <StatusBadge status={notice.status} />
+              <StatusBadge status={computedStatus} />
             </div>
           </div>
         </header>
