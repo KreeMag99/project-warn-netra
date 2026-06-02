@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           >
             <span className="mr-2 text-lg leading-none">←</span> Back to Home
           </Link>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black dark:text-white drop-shadow-sm">
+          <h1 className="font-serif text-4xl md:text-5xl font-black tracking-tight text-black dark:text-white drop-shadow-sm">
             Privacy Policy
           </h1>
           <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
@@ -28,7 +28,7 @@ export default function PrivacyPage() {
         <div className="space-y-10 bg-white dark:bg-zinc-900/60 p-8 md:p-12 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800">
           
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               1. Introduction
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -39,7 +39,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               2. Information We Collect
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               3. How We Use Your Information
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -70,7 +70,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               4. How We Protect Your Data
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               5. Sharing of Information
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               6. Your Rights
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -110,7 +110,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               7. Changes to This Policy
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">
@@ -121,7 +121,7 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white">
               8. Contact Us
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed">

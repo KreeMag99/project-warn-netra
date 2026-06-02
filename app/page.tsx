@@ -1,11 +1,13 @@
-import { getStats, getAllNotices } from '@/lib/notices'
+import { getStats, getAllNotices, getLastUpdated } from '@/lib/notices'
 import { prisma } from '@/lib/prisma'
 import StatusBadge from '@/components/status-badge'
 import Link from 'next/link'
+import { BarChart3, Users, Clock, MapPin } from 'lucide-react'
 
 export default async function Home() {
   const stats = await getStats()
   const notices = await getAllNotices()
+  const lastUpdated = await getLastUpdated()
   
   // Get first 5 notices
   const recentNotices = notices.slice(0, 5)
@@ -40,7 +42,7 @@ export default async function Home() {
             </span>
             Real-time public database
           </Link>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-600 dark:from-white dark:via-zinc-200 dark:to-zinc-500 drop-shadow-sm">
+          <h1 className="font-serif text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-600 dark:from-white dark:via-zinc-200 dark:to-zinc-500 drop-shadow-sm">
             India Layoff Warning System
           </h1>
           <p className="text-xl md:text-2xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-medium leading-relaxed">
@@ -57,7 +59,7 @@ export default async function Home() {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           <div className="p-8 bg-white dark:bg-zinc-900 rounded-3xl shadow-lg shadow-zinc-200/50 dark:shadow-none border border-zinc-200 dark:border-zinc-800 flex flex-col items-start space-y-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-900/50 group">
             <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-              📊
+              <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="w-full">
               <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1.5">Total Notices</h3>
@@ -67,7 +69,7 @@ export default async function Home() {
           
           <div className="p-8 bg-white dark:bg-zinc-900 rounded-3xl shadow-lg shadow-zinc-200/50 dark:shadow-none border border-zinc-200 dark:border-zinc-800 flex flex-col items-start space-y-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-red-200 dark:hover:border-red-900/50 group">
             <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-              👥
+              <Users className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
             <div className="w-full">
               <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1.5">Workers Affected</h3>
@@ -77,7 +79,7 @@ export default async function Home() {
           
           <div className="p-8 bg-white dark:bg-zinc-900 rounded-3xl shadow-lg shadow-zinc-200/50 dark:shadow-none border border-zinc-200 dark:border-zinc-800 flex flex-col items-start space-y-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-amber-200 dark:hover:border-amber-900/50 group">
             <div className="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-              ⏳
+              <Clock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="w-full">
               <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1.5">Upcoming Layoffs</h3>
@@ -86,10 +88,26 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* Last Updated & Methodology Link */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-xs font-semibold text-zinc-400 dark:text-zinc-500">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            Database last updated: {lastUpdated}
+          </div>
+          <span className="hidden sm:inline opacity-30">|</span>
+          <Link 
+            href="/about#methodology" 
+            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-colors flex items-center gap-1 cursor-pointer"
+          >
+            <span>Our Curation & Methodology</span>
+            <span className="text-[10px]">→</span>
+          </Link>
+        </div>
+
         {/* Sector Breakdown Chart */}
         <section className="space-y-8 pt-6">
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-5">
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+            <h2 className="font-serif text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
               Layoffs by Sector
             </h2>
           </div>
@@ -128,7 +146,7 @@ export default async function Home() {
         {/* Polished Recent Notices */}
         <section className="space-y-8 pb-12 pt-6">
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-5">
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+            <h2 className="font-serif text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
               Recent Notices
             </h2>
             <Link href="/notices" className="text-sm font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
@@ -148,7 +166,7 @@ export default async function Home() {
                       </Link>
                     </h3>
                     <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5">
-                      <span className="opacity-60 text-base">📍</span>
+                      <MapPin className="w-4 h-4 text-zinc-400" />
                       {notice.location}
                     </p>
                   </div>

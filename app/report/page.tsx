@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { CheckCircle2 } from 'lucide-react';
 
 export default function ReportPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +50,7 @@ export default function ReportPage() {
       <div className="max-w-xl w-full space-y-8 bg-white dark:bg-zinc-900/60 p-5 sm:p-8 md:p-12 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
         
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-black tracking-tight text-black dark:text-white">
+          <h1 className="font-serif text-3xl font-black tracking-tight text-black dark:text-white">
             Report a Layoff
           </h1>
           <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">
@@ -59,10 +60,13 @@ export default function ReportPage() {
 
         {isSuccess ? (
           <div className="p-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900/50 rounded-2xl text-center space-y-4">
-            <div className="text-4xl">✅</div>
+            <div className="flex justify-center"><CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" /></div>
             <h3 className="text-lg font-bold text-green-800 dark:text-green-400">
               Thank you! Your report has been received and will be reviewed.
             </h3>
+            <p className="text-sm text-green-700 dark:text-green-400 max-w-md mx-auto leading-relaxed">
+              Your submission remains completely anonymous and secure. No personal identifier or tracking data was collected, and this report will not be shared with the companies named or any third party.
+            </p>
             <div className="pt-2">
               <Link 
                 href="/" 
@@ -73,7 +77,20 @@ export default function ReportPage() {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-6">
+            <div className="p-5 bg-sky-50 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/30 rounded-2xl flex items-start gap-3.5 text-sky-800 dark:text-sky-300">
+              <svg className="w-5 h-5 mt-0.5 flex-shrink-0 text-sky-600 dark:text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <div className="text-sm leading-relaxed space-y-1">
+                <p className="font-bold text-sky-900 dark:text-sky-200">Whistleblower Protection</p>
+                <p>
+                  Your submission is completely anonymous. We do not collect, store, or share your identity or contact details. Reports are manually reviewed before publication. No information will ever be disclosed to the companies named or any third party.
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-medium rounded-xl border border-red-200 dark:border-red-900/50">
                 {error}
@@ -200,6 +217,7 @@ export default function ReportPage() {
               </button>
             </div>
           </form>
+          </div>
         )}
       </div>
     </main>

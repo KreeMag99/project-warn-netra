@@ -159,3 +159,17 @@ export async function getFilterCounts(query?: string) {
 
   return { total, statusCounts, sectorCounts }
 }
+
+export async function getLastUpdated(): Promise<string> {
+  const latest = await prisma.notice.findFirst({
+    orderBy: { createdAt: 'desc' },
+    select: { createdAt: true },
+  })
+
+  const date = latest?.createdAt ?? new Date()
+  return new Intl.DateTimeFormat('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(date)
+}

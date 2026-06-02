@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/format';
 import { getComputedStatus } from '@/lib/notices';
 import StatusBadge from '@/components/status-badge';
 import { SubscribeForm } from '@/components/subscribe-form';
+import { MapPin, Users, FileText, Bell, CalendarDays } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -57,7 +58,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
         <header className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 pb-8 border-b border-zinc-200 dark:border-zinc-800">
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white">
+              <h1 className="font-serif text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white">
                 {company.name}
               </h1>
               {company.fullName && company.fullName !== company.name && (
@@ -74,16 +75,16 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
                 )}
                 {(company.hqCity || company.hqState) && (
                   <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 shadow-sm border border-zinc-200/50 dark:border-zinc-700/50">
-                    📍 {company.hqCity}{company.hqCity && company.hqState ? ', ' : ''}{company.hqState}
+                    <MapPin className="w-3.5 h-3.5 inline-block -mt-0.5" /> {company.hqCity}{company.hqCity && company.hqState ? ', ' : ''}{company.hqState}
                   </span>
                 )}
                 {company.employeeCount && company.employeeCount > 0 ? (
                   <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 shadow-sm border border-zinc-200/50 dark:border-zinc-700/50">
-                    👥 ≈ {company.employeeCount.toLocaleString('en-IN')} Staff
+                    <Users className="w-3.5 h-3.5 inline-block -mt-0.5" /> ≈ {company.employeeCount.toLocaleString('en-IN')} Staff
                   </span>
                 ) : (
                   <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 shadow-sm border border-zinc-200/50 dark:border-zinc-700/50">
-                    👥 Actively monitoring
+                    <Users className="w-3.5 h-3.5 inline-block -mt-0.5" /> Actively monitoring
                   </span>
                 )}
               </div>
@@ -113,7 +114,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div className="p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col space-y-4 transition-transform hover:-translate-y-1">
             <div className="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-xl">
-              📄
+              <FileText className="w-6 h-6 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Total Notices Logged</h3>
@@ -125,7 +126,7 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
           
           <div className="p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col space-y-4 transition-transform hover:-translate-y-1">
             <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-xl">
-              👥
+              <Users className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Total Workers Affected</h3>
@@ -138,8 +139,8 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
 
         <section className="p-6 sm:p-8 bg-zinc-900 border-zinc-800 dark:bg-zinc-900/40 rounded-3xl shadow-sm dark:border border-zinc-800/60 space-y-4">
           <div>
-            <h2 className="text-xl font-black text-white flex items-center gap-3">
-              <span className="text-2xl drop-shadow-md">🔔</span> Get alerts for {company.name}
+            <h2 className="font-serif text-xl font-black text-white flex items-center gap-3">
+              <Bell className="w-6 h-6 text-amber-400" /> Get alerts for {company.name}
             </h2>
             <p className="text-zinc-400 font-medium text-sm mt-2 leading-relaxed max-w-2xl">
               Get email alerts when new layoff notices are published for this company.
@@ -151,8 +152,8 @@ export default async function CompanyDetailPage({ params }: { params: Promise<{ 
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-bold text-black dark:text-white flex items-center gap-3">
-            <span className="text-zinc-400 text-3xl">🗓️</span> Incident Timeline
+          <h2 className="font-serif text-2xl font-bold text-black dark:text-white flex items-center gap-3">
+            <CalendarDays className="w-7 h-7 text-zinc-400" /> Incident Timeline
           </h2>
           
           {company.notices.length === 0 ? (

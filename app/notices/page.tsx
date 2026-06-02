@@ -1,8 +1,10 @@
 import Link from 'next/link';
-import { searchNotices, getFilterCounts } from '@/lib/notices';
+import { searchNotices, getFilterCounts, getLastUpdated } from '@/lib/notices';
 import { prisma } from '@/lib/prisma';
 import { formatDate, slugify } from '@/lib/format';
 import StatusBadge from '@/components/status-badge';
+import VerificationBadge from '@/components/verification-badge';
+import { MapPin } from 'lucide-react';
 
 export default async function NoticesPage({ 
   searchParams 
@@ -21,6 +23,7 @@ export default async function NoticesPage({
   const { notices, totalCount } = await searchNotices(q, status, sector, page, pageSize, sort, dir);
 
   const counts = await getFilterCounts(q);
+  const lastUpdated = await getLastUpdated();
 
   const rawSectors = await prisma.notice.findMany({
     select: { sector: true },
@@ -70,9 +73,15 @@ export default async function NoticesPage({
       <div className="max-w-6xl mx-auto space-y-10 relative z-10">
         <header className="space-y-8">
           <div className="space-y-3 pt-4">
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-500">
-              Database Explorer
-            </h1>
+            <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-6">
+              <h1 className="font-serif text-4xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-500">
+                Database Explorer
+              </h1>
+              <span className="flex items-center gap-1.5 text-xs font-medium text-zinc-400 dark:text-zinc-600 pb-1 sm:pb-2">
+                <span className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
+                Updated: {lastUpdated}
+              </span>
+            </div>
             <p className="text-base sm:text-xl text-zinc-600 dark:text-zinc-400 font-medium">
               A comprehensive list of all recorded layoff and retrenchment notices in India.
             </p>
@@ -160,6 +169,16 @@ export default async function NoticesPage({
           </div>
         </header>
 
+        {/* Verification Legend */}
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pb-2">
+          <span className="font-semibold uppercase tracking-wider text-[10px] mr-1">Verification:</span>
+          <VerificationBadge verification="confirmed" /> <span className="opacity-75">Official statement</span>
+          <span className="opacity-30">|</span>
+          <VerificationBadge verification="reported" /> <span className="opacity-75">Credible news</span>
+          <span className="opacity-30">|</span>
+          <VerificationBadge verification="estimate" /> <span className="opacity-75">Approximation</span>
+        </div>
+
         <section className="bg-white dark:bg-zinc-900/80 rounded-3xl shadow-lg shadow-zinc-200/50 dark:shadow-none border border-zinc-200 dark:border-zinc-800 overflow-hidden relative">
           <div className="overflow-x-auto scrollbar-hide">
             <table className="w-full text-left border-collapse min-w-[800px]">
@@ -210,17 +229,30 @@ export default async function NoticesPage({
                       </td>
                       <td className="px-6 py-6 whitespace-nowrap">
                         <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300 font-semibold text-sm">
-                          <span className="opacity-60 text-base">📍</span>
+                          <MapPin className="w-4 h-4 text-zinc-400 flex-shrink-0" />
                           {notice.location}
                         </div>
                       </td>
                       <td className="px-6 py-6 whitespace-nowrap">
-                        <span className="font-semibold text-[15px] text-zinc-700 dark:text-zinc-300 tracking-wide">
-                          {formatDate(notice.date)}
-                        </span>
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-[15px] text-zinc-700 dark:text-zinc-300 tracking-wide">
+                            {formatDate(notice.date)}
+                          </span>
+                          {notice.announcedDate && (() => {
+                            const gap = Math.ceil((notice.date.getTime() - new Date(notice.announcedDate).getTime()) / (1000 * 60 * 60 * 24));
+                            return (
+                              <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-600">
+                                {gap}d notice
+                              </span>
+                            );
+                          })()}
+                        </div>
                       </td>
-                      <td className="px-8 py-6 whitespace-nowrap flex justify-center relative z-20">
-                        <StatusBadge status={notice.computedStatus} />
+                      <td className="px-8 py-6 whitespace-nowrap relative z-20">
+                        <div className="flex flex-col items-center gap-2">
+                          <StatusBadge status={notice.computedStatus} />
+                          <VerificationBadge verification={notice.verification} />
+                        </div>
                       </td>
                       <td className="absolute inset-0 z-10">
                         <Link href={`/notices/${notice.id}`} aria-hidden="true" className="w-full h-full block focus:outline-none" tabIndex={-1}></Link>

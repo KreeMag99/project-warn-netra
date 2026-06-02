@@ -12,7 +12,7 @@ export default function AboutPage() {
       <div className="max-w-3xl mx-auto space-y-12">
         {/* 1. Hero / Introduction */}
         <header className="space-y-4 pt-8">
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight text-black dark:text-white drop-shadow-sm">
+          <h1 className="font-serif text-5xl md:text-6xl font-black tracking-tight text-black dark:text-white drop-shadow-sm">
             About Project WARN
           </h1>
           <p className="text-xl md:text-2xl text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
@@ -24,7 +24,7 @@ export default function AboutPage() {
           
           {/* 2. Why This Exists */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
               Why This Exists
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed tracking-wide">
@@ -38,40 +38,48 @@ export default function AboutPage() {
           </section>
 
           {/* 3. Our Methodology */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
+          <section id="methodology" className="space-y-6 scroll-mt-24">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
               Our Methodology
             </h2>
-            <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed tracking-wide">
+            <div className="text-zinc-700 dark:text-zinc-300 space-y-5 leading-relaxed tracking-wide">
               <p>
-                We do not scrape unverified rumors or social media speculation. Our methodology is rooted strictly in corroborated events. When a structural layoff occurs, we document the specific entity involved, the geographic locations impacted, the volume of affected workers, and the stated business rationale behind the restructuring.
+                Our database is manually curated and updated daily to maintain accuracy and integrity. Since there is no official real-time government registry or public API, we gather data from high-trust sources, including leading financial journalism (such as <em>The Economic Times</em>, <em>Moneycontrol</em>, and <em>Business Standard</em>), statutory corporate filings, and anonymous, verified whistleblower submissions.
               </p>
               <p>
-                By digitizing and centralizing this information, we provide an early-warning signal for job seekers, a dataset for economic analysts, and transparency for the affected communities.
+                Every layoff notice undergoes a rigorous manual verification process before publication. We require at least one credible public news report or direct internal documentation (such as severance notices or internal communications) to corroborate the event. When numbers are unconfirmed or vary across reporting sources, we adopt conservative estimates to ensure the database remains reliable and free of speculation.
               </p>
-            </div>
-          </section>
+              <p>
+                To provide transparency and clarity, we classify every notice in our system under one of three verification tiers:
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 pb-2">
+                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 mb-2">Confirmed</span>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Verified through official company press releases, corporate statements, or statutory regulatory filings.</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 mb-2">Reported</span>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Corroborated by multiple credible, mainstream business and technology publications.</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 mb-2">Estimate</span>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Approximated figures based on initial reports, industry analyses, or ranges when exact counts are undisclosed.</p>
+                </div>
+              </div>
 
-          {/* 4. Data Sources */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
-              Data Sources
-            </h2>
-            <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed tracking-wide">
               <p>
-                Because no official real-time API or single registry exists, our data is manually coalesced and corroborated from high-trust public records, including:
+                Under the Indian Industrial Disputes Act of 1947, industrial establishments with 100 or more workers must seek government approval before proceeding with retrenchment. However, there is no legal requirement to make these filings accessible to the public, nor is there a direct public disclosure mandate similar to the U.S. WARN Act.
               </p>
-              <ul className="list-disc list-inside space-y-2 text-zinc-800 dark:text-zinc-200 ml-2 font-medium">
-                <li>Leading financial journalism (e.g., The Economic Times, Moneycontrol, Business Standard)</li>
-                <li>Direct technology reporting (e.g., TechCrunch, Inc42, Bloomberg)</li>
-                <li>Mandated statutory corporate filings and public PR statements</li>
-              </ul>
+              <p>
+                By digitizing and centralizing this information, Project WARN acts as an early-warning registry, helping job seekers prepare, allowing analysts to monitor labor trends, and providing transparency to local communities.
+              </p>
             </div>
           </section>
 
           {/* 5. Founder's Note */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
               Founder&apos;s Note
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed tracking-wide">
@@ -83,7 +91,7 @@ export default function AboutPage() {
 
           {/* 6. Contact */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-black dark:text-white pb-2 border-b border-zinc-100 dark:border-zinc-800">
               Contact
             </h2>
             <div className="text-zinc-700 dark:text-zinc-300 space-y-4 leading-relaxed tracking-wide flex flex-col">

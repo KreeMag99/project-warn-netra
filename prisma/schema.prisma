@@ -11,6 +11,8 @@ model Notice {
   id          Int      @id @default(autoincrement())
   company     String
   date        DateTime
+  announcedDate DateTime?
+  verification String   @default("reported")
   affected    Int
   location    String
   sector      String?

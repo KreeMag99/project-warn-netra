@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { getNoticeById } from '@/lib/notices';
 import { formatDate, daysUntil, slugify } from '@/lib/format';
 import StatusBadge from '@/components/status-badge';
+import VerificationBadge from '@/components/verification-badge';
 import { SubscribeForm } from '@/components/subscribe-form';
+import { Clock, Megaphone, Calendar, Users, MapPin, Share2, FileText, Bell } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -42,8 +44,46 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
   const shareUrl = encodeURIComponent(`https://projectwarn.org/notices/${notice.id}`);
   const shareText = encodeURIComponent(`${notice.company} Layoff Notice: ${notice.affected} workers affected.`);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${notice.company} Layoff Notice`,
+    description: `Details regarding ${notice.company} affecting ${notice.affected.toLocaleString('en-IN')} workers in ${notice.location}.`,
+    datePublished: notice.announcedDate ? notice.announcedDate.toISOString() : notice.date.toISOString(),
+    dateModified: notice.updatedAt ? notice.updatedAt.toISOString() : notice.date.toISOString(),
+    author: {
+      '@type': 'Organization',
+      name: 'Project WARN',
+      url: 'https://projectwarn.org'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Project WARN',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://projectwarn.org/logo.png'
+      }
+    },
+    about: {
+      '@type': 'Event',
+      name: `${notice.company} Layoff`,
+      startDate: notice.date.toISOString(),
+      location: {
+        '@type': 'Place',
+        name: notice.location
+      },
+      description: `${notice.affected} workers affected. Status: ${computedStatus}.`
+    },
+    sameAs: notice.source
+  };
+
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-black p-4 sm:p-12 font-sans text-zinc-900 dark:text-zinc-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="min-h-screen bg-zinc-50 dark:bg-black p-4 sm:p-12 font-sans text-zinc-900 dark:text-zinc-100">
       <div className="max-w-4xl mx-auto space-y-12">
         <Link 
           href="/notices"
@@ -66,13 +106,14 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
                 href={`/companies/${notice.companySlug || slugify(notice.company)}`} 
                 className="inline-block hover:opacity-80 transition-opacity"
               >
-                <h1 className="text-5xl md:text-7xl font-black tracking-tight text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors drop-shadow-sm">
+                <h1 className="font-serif text-5xl md:text-7xl font-black tracking-tight text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors drop-shadow-sm">
                   {notice.company}
                 </h1>
               </Link>
             </div>
-            <div className="flex-shrink-0 pt-2 sm:pt-4">
+            <div className="flex flex-col sm:items-end gap-2 pt-2 sm:pt-4">
               <StatusBadge status={computedStatus} />
+              <VerificationBadge verification={notice.verification} />
             </div>
           </div>
         </header>
@@ -89,7 +130,7 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
         {isUpcoming && remainingDays > 0 && (
           <div className="p-6 rounded-3xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between shadow-sm gap-4 mt-6">
             <div className="flex items-center gap-4">
-              <span className="text-3xl drop-shadow-sm">⏳</span>
+              <Clock className="w-8 h-8 text-amber-600 dark:text-amber-400" />
               <div>
                 <p className="font-bold text-amber-900 dark:text-amber-400 text-lg">
                   Takes Effect in {remainingDays} Days
@@ -104,22 +145,44 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
 
         <div className="w-full h-px bg-zinc-200 dark:bg-zinc-800"></div>
 
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {notice.announcedDate && (
+            <div className="p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col space-y-4 transition-transform hover:-translate-y-1">
+              <div className="w-12 h-12 rounded-full bg-violet-50 dark:bg-violet-900/20 flex items-center justify-center text-xl">
+              <Megaphone className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+              </div>
+              <div>
+                <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Announced</h3>
+                <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white tracking-tight">
+                  {formatDate(notice.announcedDate)}
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col space-y-4 transition-transform hover:-translate-y-1">
             <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-xl">
-              📅
+              <Calendar className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Effective Date</h3>
               <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white tracking-tight">
                 {formatDate(notice.date)}
               </p>
+              {notice.announcedDate && (() => {
+                const gap = Math.ceil((notice.date.getTime() - notice.announcedDate.getTime()) / (1000 * 60 * 60 * 24));
+                return (
+                  <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 mt-2">
+                    {gap} days notice given
+                  </p>
+                );
+              })()}
             </div>
           </div>
           
           <div className="p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col space-y-4 transition-transform hover:-translate-y-1">
             <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-xl">
-              👥
+              <Users className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Workers Affected</h3>
@@ -131,7 +194,7 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
           
           <div className="p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col space-y-4 transition-transform hover:-translate-y-1">
             <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-xl">
-              📍
+              <MapPin className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Location</h3>
@@ -147,8 +210,8 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
         <section className="flex flex-col sm:flex-row gap-6">
           {/* Share Section */}
           <div className="flex-1 p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-6">
-            <h2 className="text-2xl font-bold text-black dark:text-white flex items-center gap-3">
-              <span className="text-zinc-400 text-3xl">🔗</span> Share Notice
+            <h2 className="font-serif text-2xl font-bold text-black dark:text-white flex items-center gap-3">
+              <Share2 className="w-7 h-7 text-zinc-400" /> Share Notice
             </h2>
             <div className="flex flex-wrap gap-3">
               <a 
@@ -180,8 +243,8 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
 
           {/* Source Section */}
           <div className="flex-1 p-6 sm:p-8 bg-white dark:bg-zinc-900/80 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-6">
-            <h2 className="text-2xl font-bold text-black dark:text-white flex items-center gap-3">
-              <span className="text-zinc-400 text-3xl">📄</span> Official Source
+            <h2 className="font-serif text-2xl font-bold text-black dark:text-white flex items-center gap-3">
+              <FileText className="w-7 h-7 text-zinc-400" /> Official Source
             </h2>
             <div className="pt-2">
               <a 
@@ -198,8 +261,8 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
 
         <section className="p-6 sm:p-8 bg-zinc-900 border-zinc-800 dark:bg-zinc-900/40 rounded-3xl shadow-sm dark:border border-zinc-800/60 space-y-4">
           <div>
-            <h2 className="text-xl font-black text-white flex items-center gap-3">
-              <span className="text-2xl drop-shadow-md">🔔</span> Get alerts for this company
+            <h2 className="font-serif text-xl font-black text-white flex items-center gap-3">
+              <Bell className="w-6 h-6 text-amber-400" /> Get alerts for this company
             </h2>
             <p className="text-zinc-400 font-medium text-sm mt-2 leading-relaxed max-w-2xl">
               Get email alerts when new layoff notices are published for {notice.company}.
@@ -211,5 +274,6 @@ export default async function NoticeDetailPage({ params }: { params: Promise<{ i
         </section>
       </div>
     </main>
+    </>
   );
 }

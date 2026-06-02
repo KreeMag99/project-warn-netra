@@ -5,6 +5,29 @@ const prisma = new PrismaClient()
 // Standardized robust text conversion handler
 const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
+// Generate a realistic announced date 30-60 days before the effective date
+function makeAnnouncedDate(effectiveDate: Date): Date {
+  const daysBeforeMin = 30;
+  const daysBeforeMax = 60;
+  const daysBefore = daysBeforeMin + Math.floor(Math.random() * (daysBeforeMax - daysBeforeMin + 1));
+  const announced = new Date(effectiveDate);
+  announced.setDate(announced.getDate() - daysBefore);
+  return announced;
+}
+
+// Assign verification tier based on source/reason hints
+function getVerificationTier(notice: any): 'confirmed' | 'reported' | 'estimate' {
+  const source = notice.source.toLowerCase();
+  const reason = (notice.reason || '').toLowerCase();
+  if (source.includes('business-standard') || source.includes('reuters') || reason.includes('statement')) {
+    return 'confirmed';
+  }
+  if (source.includes('inc42') || source.includes('moneycontrol') || source.includes('economictimes')) {
+    return 'reported';
+  }
+  return 'estimate';
+}
+
 async function main() {
   await prisma.notice.deleteMany({})
   await prisma.company.deleteMany({})
@@ -132,9 +155,13 @@ async function main() {
 
   let noticeCount = 0;
   for (const notice of noticesRaw) {
+    const announcedDate = makeAnnouncedDate(notice.date);
+    const verification = getVerificationTier(notice);
     await prisma.notice.create({ 
       data: {
         ...notice,
+        announcedDate,
+        verification,
         companySlug: slugify(notice.company)
       } 
     })

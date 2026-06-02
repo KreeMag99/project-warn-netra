@@ -15,7 +15,7 @@ export default async function VerifyPage({ searchParams }: Props) {
           <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-2">Invalid Link</h1>
+          <h1 className="font-serif text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-2">Invalid Link</h1>
           <p className="text-zinc-600 dark:text-zinc-400 mb-8">Invalid or expired verification link.</p>
           <Link href="/" className="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-sm w-full sm:w-auto">
             Return Home
@@ -36,7 +36,7 @@ export default async function VerifyPage({ searchParams }: Props) {
           <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-2">Not Found</h1>
+          <h1 className="font-serif text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-2">Not Found</h1>
           <p className="text-zinc-600 dark:text-zinc-400 mb-8">Invalid or expired verification link.</p>
           <Link href="/" className="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-sm w-full sm:w-auto">
             Return Home
@@ -53,7 +53,7 @@ export default async function VerifyPage({ searchParams }: Props) {
           <svg className="w-16 h-16 text-blue-500 dark:text-blue-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-2">Already Verified</h1>
+          <h1 className="font-serif text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-2">Already Verified</h1>
           <p className="text-zinc-600 dark:text-zinc-400 mb-8">This subscription is already verified.</p>
           <Link href="/notices" className="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-sm w-full sm:w-auto">
             Browse Notices
@@ -77,7 +77,7 @@ export default async function VerifyPage({ searchParams }: Props) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="text-3xl font-black text-zinc-900 dark:text-zinc-100 mb-3 tracking-tight">Verified!</h1>
+        <h1 className="font-serif text-3xl font-black text-zinc-900 dark:text-zinc-100 mb-3 tracking-tight">Verified!</h1>
         <p className="text-green-800 dark:text-green-300 font-medium mb-8 text-lg">
           Subscription verified successfully! You will now receive alerts.
         </p>

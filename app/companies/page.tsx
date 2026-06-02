@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import { MapPin, Users } from 'lucide-react'
 
 export const metadata = {
   title: 'Companies Directory | Project WARN',
@@ -25,7 +26,7 @@ export default async function CompaniesPage() {
     <main className="min-h-screen bg-zinc-50 dark:bg-black p-4 sm:p-12 font-sans text-zinc-900 dark:text-zinc-100">
       <div className="max-w-7xl mx-auto space-y-10">
         <header className="space-y-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white">
+          <h1 className="font-serif text-4xl md:text-5xl font-extrabold tracking-tight text-black dark:text-white">
             Companies
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 font-medium max-w-2xl leading-relaxed">
@@ -42,7 +43,7 @@ export default async function CompaniesPage() {
             >
               <div className="flex-1 space-y-4">
                 <div className="space-y-1.5">
-                  <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                  <h2 className="font-serif text-xl font-bold tracking-tight text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                     {company.name}
                   </h2>
                   {company.sector && (
@@ -55,13 +56,13 @@ export default async function CompaniesPage() {
                 <div className="space-y-2.5 pt-2">
                   {(company.hqCity || company.hqState) && (
                     <div className="flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400 gap-2">
-                      <span className="text-base grayscale opacity-60 group-hover:opacity-100 transition-opacity">📍</span>
+                      <MapPin className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors flex-shrink-0" />
                       {company.hqCity}{company.hqCity && company.hqState ? ', ' : ''}{company.hqState}
                     </div>
                   )}
                   {company.employeeCount && company.employeeCount > 0 ? (
                     <div className="flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400 gap-2">
-                      <span className="text-base grayscale opacity-60 group-hover:opacity-100 transition-opacity">👥</span>
+                      <Users className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors flex-shrink-0" />
                       ≈ {company.employeeCount.toLocaleString('en-IN')} Employees
                     </div>
                   ) : null}
